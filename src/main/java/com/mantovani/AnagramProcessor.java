@@ -29,8 +29,8 @@ class AnagramProcessor {
     }
 
     private void getAnagramsForPendingChars(List<String> currentAnagram, int fromChar, HashMap<Character, Integer> pendingChars) {
-        for (int i=fromChar; i<validWords.size(); i++) {
-            String validWord = validWords.get(i);
+        for (int i=fromChar; i<this.validWords.size(); i++) {
+            String validWord = this.validWords.get(i);
             HashMap<Character, Integer> dictionaryFreqWord = this.frequencyDictionary.getFrequency(validWord);
 
             if (this.canAddWordToAnagram(dictionaryFreqWord, pendingChars)) {

@@ -24,7 +24,8 @@ public class AnagramApp {
             for (String anagram: anagrams) {
                 System.out.println(anagram);
             }
-            System.out.println("Execution Time: " + (endTime - startTime) + "ms");
+            System.out.println("\nExecution Time: " + (endTime - startTime) + "ms");
+            System.out.println("Input length: " + args[0].length());
             System.out.println("Words found: " + anagrams.size());
         } catch (FileNotFoundException|InputFormatException e) {
             System.err.println(e.getMessage());
