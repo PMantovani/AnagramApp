@@ -12,7 +12,7 @@ public class AnagramApp {
             List<String> validWords = dictionaryReader.read();
 
             AnagramProcessor processor = new AnagramProcessor(validWords);
-            List<String> anagrams = processor.getAnagrams(args[1]);
+            List<String> anagrams = processor.getAnagrams(args[0]);
             for (String anagram: anagrams) {
                 System.out.println(anagram);
             }
