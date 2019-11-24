@@ -16,10 +16,10 @@ public class AnagramApp {
             long startTime = System.currentTimeMillis();
             // DictionaryFileReader class expects 'palavras.txt' to be in the resources folder
             DictionaryFileReader dictionaryReader = new DictionaryFileReader("palavras.txt");
-            List<String> validWords = dictionaryReader.read();
+            List<String> allWords = dictionaryReader.read();
 
-            AnagramProcessor processor = new AnagramProcessor(validWords);
-            List<String> anagrams = processor.getAnagrams(args[0]);
+            AnagramProcessor processor = new AnagramProcessor();
+            List<String> anagrams = processor.getAnagrams(allWords, args[0]);
             long endTime = System.currentTimeMillis();
             for (String anagram: anagrams) {
                 System.out.println(anagram);

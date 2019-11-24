@@ -7,18 +7,17 @@ class AnagramProcessor {
     private LetterFrequencyDictionary frequencyDictionary;
     private List<List<String>> allAnagrams;
 
-    AnagramProcessor(List<String> validWords) {
-        this.validWords = validWords;
-    }
-
-    List<String> getAnagrams(String input) throws InputFormatException {
+    List<String> getAnagrams(List<String> allWords, String input) throws InputFormatException {
         if (!this.isValidInput(input)) {
             throw new InputFormatException("Input should contain only non-accentuated characters and whitespaces");
         }
+        // Convert letters to uppercase
+        input = input.toUpperCase();
 
-        this.frequencyDictionary = new LetterFrequencyDictionary(this.validWords);
+        this.frequencyDictionary = new LetterFrequencyDictionary(allWords, input);
+        this.validWords = this.frequencyDictionary.getValidWords();
 
-        HashMap<Character, Integer> inputFrequency = new LetterFrequencyWord(input.toUpperCase()).getFrequency();
+        HashMap<Character, Integer> inputFrequency = new LetterFrequencyWord(input).getFrequency();
         this.allAnagrams = new ArrayList<>();
         this.getAnagramsForPendingChars(new ArrayList<>(),0, inputFrequency);
         return this.sortAnagrams(this.allAnagrams);
@@ -77,7 +76,6 @@ class AnagramProcessor {
 
     private List<String> sortAnagrams(List<List<String>> unsortedAnagrams) {
         List<String> sortedAnagram = new ArrayList<>();
-
         for (List<String> anagramWords : unsortedAnagrams) {
             Collections.sort(anagramWords);
             sortedAnagram.add(String.join(" ", anagramWords));

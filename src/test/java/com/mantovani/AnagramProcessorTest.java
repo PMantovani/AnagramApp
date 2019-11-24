@@ -13,32 +13,32 @@ class AnagramProcessorTest {
     @Test
     void testValidInputContainingWhitespacesDoesNotThrowException() {
         assertDoesNotThrow(() -> {
-            AnagramProcessor p = new AnagramProcessor(new ArrayList<>());
-            p.getAnagrams("test all string with space");
+            AnagramProcessor p = new AnagramProcessor();
+            p.getAnagrams(new ArrayList<>(), "test all string with space");
         });
     }
 
     @Test
     void testInvalidInputContainingDigitsThrowException() {
         assertThrows(InputFormatException.class, () -> {
-            AnagramProcessor p = new AnagramProcessor(new ArrayList<>());
-            p.getAnagrams("1234");
+            AnagramProcessor p = new AnagramProcessor();
+            p.getAnagrams(new ArrayList<>(), "1234");
         });
     }
 
     @Test
     void testInvalidInputContainingAccentuatedCharactersThrowsException() {
         assertThrows(InputFormatException.class, () -> {
-            AnagramProcessor p = new AnagramProcessor(new ArrayList<>());
-            p.getAnagrams("áccentuated");
+            AnagramProcessor p = new AnagramProcessor();
+            p.getAnagrams(new ArrayList<>(), "áccentuated");
         });
     }
 
     @Test
     void testValidInputAcceptsUppercase() {
         assertDoesNotThrow(() -> {
-            AnagramProcessor p = new AnagramProcessor(new ArrayList<>());
-            p.getAnagrams("UPPERCASE");
+            AnagramProcessor p = new AnagramProcessor();
+            p.getAnagrams(new ArrayList<>(), "UPPERCASE");
         });
     }
 
@@ -47,8 +47,8 @@ class AnagramProcessorTest {
         String[] validWords = {"ELM", "HO", "OH", "REV", "OHM", "REVEL", "LEVER",
                                 "HOVER", "HOLM", "VEER", "HELM", "OVER", "ROVE"};
 
-        AnagramProcessor p = new AnagramProcessor(Arrays.asList(validWords));
-        List<String> anagrams = p.getAnagrams("vermelho");
+        AnagramProcessor p = new AnagramProcessor();
+        List<String> anagrams = p.getAnagrams(Arrays.asList(validWords), "vermelho");
         assertEquals(8, anagrams.size());
     }
 
@@ -56,8 +56,8 @@ class AnagramProcessorTest {
     void testReturnAnagramSorted() throws InputFormatException {
         String[] validWords = {"A", "B", "C", "D"};
 
-        AnagramProcessor p = new AnagramProcessor(Arrays.asList(validWords));
-        List<String> anagrams = p.getAnagrams("DCBA");
+        AnagramProcessor p = new AnagramProcessor();
+        List<String> anagrams = p.getAnagrams(Arrays.asList(validWords), "DCBA");
         assertEquals("A B C D", anagrams.get(0));
     }
 
@@ -65,8 +65,8 @@ class AnagramProcessorTest {
     void testReturnNoAnagram() throws InputFormatException {
         String[] validWords = {"A", "B", "C", "D"};
 
-        AnagramProcessor p = new AnagramProcessor(Arrays.asList(validWords));
-        List<String> anagrams = p.getAnagrams("DCBAA");
+        AnagramProcessor p = new AnagramProcessor();
+        List<String> anagrams = p.getAnagrams(Arrays.asList(validWords), "DCBAA");
         assertEquals(0, anagrams.size());
     }
 }
