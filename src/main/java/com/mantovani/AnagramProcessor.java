@@ -11,8 +11,8 @@ class AnagramProcessor {
         if (!this.isValidInput(input)) {
             throw new InputFormatException("Input should contain only non-accentuated characters and whitespaces");
         }
-        // Convert letters to uppercase
-        input = input.toUpperCase();
+        // Convert letters to uppercase and remove spaces
+        input = input.toUpperCase().replace(" ", "");
 
         this.frequencyDictionary = new LetterFrequencyDictionary(allWords, input);
         this.validWords = this.frequencyDictionary.getValidWords();
