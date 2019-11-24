@@ -4,7 +4,8 @@ import java.util.*;
 
 class AnagramProcessor {
     private List<String> validWords;
-    private List<String> allAnagrams;
+    private LetterFrequencyDictionary frequencyDictionary;
+    private List<List<String>> allAnagrams;
 
     AnagramProcessor(List<String> validWords) {
         this.validWords = validWords;
@@ -15,9 +16,11 @@ class AnagramProcessor {
             throw new InputFormatException("Input should contain only non-accentuated characters and whitespaces");
         }
 
+        this.frequencyDictionary = new LetterFrequencyDictionary(this.validWords);
+
         HashMap<Character, Integer> inputFrequency = new LetterFrequencyWord(input.toUpperCase()).getFrequency();
         this.allAnagrams = new ArrayList<>();
-        this.getAnagramsForPendingChars("",0, inputFrequency);
+        this.getAnagramsForPendingChars(new ArrayList<>(),0, inputFrequency);
         return this.sortAnagrams(this.allAnagrams);
     }
 
@@ -26,20 +29,16 @@ class AnagramProcessor {
         return input.matches("[a-zA-Z ]+");
     }
 
-    private void getAnagramsForPendingChars(String currentAnagram, int fromChar, HashMap<Character, Integer> pendingChars) {
+    private void getAnagramsForPendingChars(List<String> currentAnagram, int fromChar, HashMap<Character, Integer> pendingChars) {
         for (int i=fromChar; i<validWords.size(); i++) {
             String validWord = validWords.get(i);
+            HashMap<Character, Integer> dictionaryFreqWord = this.frequencyDictionary.getFrequency(validWord);
 
-            if (this.canAddWordToAnagram(validWord, pendingChars)) {
-                HashMap<Character, Integer> dictionaryFreqWord = new LetterFrequencyWord(validWord).getFrequency();
+            if (this.canAddWordToAnagram(dictionaryFreqWord, pendingChars)) {
                 HashMap<Character, Integer> newFrequencyMap = this.subtractFrequency(pendingChars, dictionaryFreqWord);
 
-                String newAnagramWords;
-                if (currentAnagram.equals("")) {
-                    newAnagramWords = validWord;
-                } else {
-                    newAnagramWords = currentAnagram + " " + validWord;
-                }
+                List<String> newAnagramWords = new ArrayList<>(currentAnagram);
+                newAnagramWords.add(validWord);
 
                 if (newFrequencyMap.isEmpty()) {
                     // Base case. This is an anagram, so add to anagram list
@@ -52,10 +51,8 @@ class AnagramProcessor {
         }
     }
 
-    private boolean canAddWordToAnagram(String wordToAdd, HashMap<Character, Integer> pendingChars) {
-        HashMap<Character, Integer> wordToAddFrequency = new LetterFrequencyWord(wordToAdd).getFrequency();
-
-        for (Map.Entry<Character, Integer> entry: wordToAddFrequency.entrySet()) {
+    private boolean canAddWordToAnagram(HashMap<Character, Integer> wordToAdd, HashMap<Character, Integer> pendingChars) {
+        for (Map.Entry<Character, Integer> entry: wordToAdd.entrySet()) {
             int pendingFrequencyForChar = pendingChars.getOrDefault(entry.getKey(), 0);
             if (pendingFrequencyForChar - entry.getValue() < 0) {
                 return false;
@@ -78,14 +75,12 @@ class AnagramProcessor {
         return result;
     }
 
-    private List<String> sortAnagrams(List<String> unsortedAnagrams) {
+    private List<String> sortAnagrams(List<List<String>> unsortedAnagrams) {
         List<String> sortedAnagram = new ArrayList<>();
 
-        for (String anagram : unsortedAnagrams) {
-            String[] wordsInAnagram = anagram.split(" ");
-            Arrays.sort(wordsInAnagram);
-
-            sortedAnagram.add(String.join(" ", wordsInAnagram));
+        for (List<String> anagramWords : unsortedAnagrams) {
+            Collections.sort(anagramWords);
+            sortedAnagram.add(String.join(" ", anagramWords));
         }
         return sortedAnagram;
     }
