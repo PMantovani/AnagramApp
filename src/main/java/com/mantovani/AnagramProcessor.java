@@ -44,7 +44,6 @@ class AnagramProcessor {
                 if (newFrequencyMap.isEmpty()) {
                     // Base case. This is an anagram, so add to anagram list
                     allAnagrams.add(newAnagramWords);
-                    return;
                 } else {
                     // Recursive call. Go to next levels to find more anagrams.
                     this.getAnagramsForPendingChars(newAnagramWords, i+1, newFrequencyMap);
